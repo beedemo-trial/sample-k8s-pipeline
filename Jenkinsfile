@@ -1,19 +1,11 @@
 pipeline {
   agent {
-    kubernetes {
-      label 'kubernetes'
-      containerTemplate {
-        name 'maven'
-        image 'maven:3.3.9-jdk-8-alpine'
-        ttyEnabled true
-        command 'cat'
-      }
-    }
+    label 'java-maven'
   }
   stages {
     stage('Maven in k8s') {
         steps {
-            container('maven') {
+            container('global-maven') {
                 sh 'mvn -version'
             }
         }
