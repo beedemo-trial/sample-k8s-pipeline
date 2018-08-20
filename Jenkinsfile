@@ -1,38 +1,20 @@
 pipeline {
   agent {
     kubernetes {
-      label 'mypod'
-      defaultContainer 'jnlp'
-      yaml """
-  apiVersion: v1
-  kind: Pod
-  metadata:
-  labels:
-    some-label: busybox-maven
-  spec:
-  containers:
-  - name: maven
-    image: maven:alpine
-    command:
-    - cat
-    tty: true
-  - name: busybox
-    image: busybox
-    command:
-    - cat
-    tty: true
-  """
+      label 'kubernetes'
+      containerTemplate {
+        name 'maven'
+        image 'maven:3.3.9-jdk-8-alpine'
+        ttyEnabled true
+        command 'cat'
+      }
     }
   }
   stages {
-    stage('Run maven') {
+    stage('Maven in k8s') {
         steps {
             container('maven') {
                 sh 'mvn -version'
-            }
-
-            container('busybox') {
-              sh '/bin/busybox'
             }
         }
     }
