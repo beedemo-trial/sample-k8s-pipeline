@@ -3,8 +3,8 @@ pipeline {
     kubernetes {
       label 'kubernetes'
       containerTemplate {
-        name 'maven'
-        image 'maven:3.3.9-jdk-8-alpine'
+        name 'jdk7-maven3'
+        image 'maven:3.5-jdk-7-alpine'
         ttyEnabled true
         command 'cat'
       }
@@ -13,7 +13,7 @@ pipeline {
   stages {
     stage('Maven in k8s') {
         steps {
-            container('maven') {
+            container('jdk7-maven3') {
                 sh 'mvn -version'
             }
         }
